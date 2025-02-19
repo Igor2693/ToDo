@@ -1,63 +1,83 @@
-const todoControl = document.querySelector('.todo-control')
-const headerInput = document.querySelector('.header-input')
+'use strict'
+
+
+const control = document.querySelector('.todo-control')
+const input = document.querySelector('.header-input')
+const button = document.querySelector('.header-button')
+const remove = document.querySelector('.todo-remove')
+const btnCompl = document.querySelector('.todo-complete')
 const todoList = document.querySelector('.todo-list')
-const todoCompleted = document.querySelector('.todo-completed')
+const todoCompl = document.querySelector('.todo-completed')
 
-const data = []
 
-const reg = function () {
+const object = []
+
+const render = function () {
     todoList.innerHTML = ''
-    todoCompleted.innerHTML = ''
-    data.forEach(function (item, index) {
-
+    todoCompl.innerHTML = ''
+    object.forEach(function (item) {
         const li = document.createElement('li')
         li.classList.add('todo-item')
-        li.innerHTML = '<span class="text-todo">' + item.text + '</span>' +
+        li.innerHTML = '<span class="text-todo">' + item.name + '</span>' +
             '<div class="todo-buttons">' +
             '<button class="todo-remove"></button>' +
-            '<button class="todo-complete"></button>' +
+            ' <button class="todo-complete"></button>' +
             '</div>'
-
+        console.log(li);
+        console.log(item);
         if (item.completed) {
-            todoCompleted.append(li)
+            todoCompl.append(li)
         } else {
             todoList.append(li)
         }
-
-        const check = li.querySelector('.todo-complete')
-        check.addEventListener('click', function () {
+        console.log(item);
+        const app = li.querySelector('.todo-complete')
+        app.addEventListener('click', function () {
             item.completed = !item.completed
-            reg()
-        })
+            render()
+            console.log(object);
+            console.log(item);
 
+        })
+        console.log(item);
         const del = li.querySelector('.todo-remove')
         del.addEventListener('click', function () {
-            const itemRemove = data.indexOf(item)
-            data.splice(itemRemove, 1)
-            reg()
+            object.splice(item, 1)
+            render()
 
-            console.log(itemRemove);
+
+            console.log(todoList);
+            console.log(todoCompl);
+            console.log(object);
+            console.log(item);
+            console.log(object);
 
         })
 
     })
 }
 
-todoControl.addEventListener('submit', function (event) {
+control.addEventListener('submit', function (event) {
     event.preventDefault()
-
-    const newObj = {
-        text: headerInput.value,
-        compledted: false
-    }
-    if (headerInput.value === '') {
-        alert('Введите задачу');
-
-    } else {
-        data.push(newObj)
-
-    }
-
-    headerInput.value = ''
-    reg()
 })
+
+button.addEventListener('click', function () {
+    if (input.value !== '') {
+        const newObj = {
+            name: input.value,
+            completed: false
+        }
+        object.push(newObj)
+        input.value = ''
+        render()
+    } else {
+        console.log('Введите значение');
+
+    }
+
+
+    console.log(object);
+    console.log(todoList);
+
+})
+
