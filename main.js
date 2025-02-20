@@ -1,76 +1,86 @@
 'use strict'
 
-
-const control = document.querySelector('.todo-control')
+const todoFofm = document.querySelector('.todo-control')
 const input = document.querySelector('.header-input')
-const button = document.querySelector('.header-button')
-const remove = document.querySelector('.todo-remove')
-const btnCompl = document.querySelector('.todo-complete')
+const addBtn = document.querySelector('.header-button')
 const todoList = document.querySelector('.todo-list')
-const todoCompl = document.querySelector('.todo-completed')
+const todoCompleted = document.querySelector('.todo-completed')
+const removeBtn = document.querySelector('.todo-remove')
 
 
-const object = []
+
+
+
+const appData = localStorage.getItem("text")
+    ? JSON.parse(localStorage.getItem("text"))
+    : []
 
 const render = function () {
     todoList.innerHTML = ''
-    todoCompl.innerHTML = ''
-    object.forEach(function (item) {
+    todoCompleted.innerHTML = ''
+    appData.forEach(function (item, index) {
         const li = document.createElement('li')
         li.classList.add('todo-item')
         li.innerHTML = '<span class="text-todo">' + item.name + '</span>' +
             '<div class="todo-buttons">' +
             '<button class="todo-remove"></button>' +
-            ' <button class="todo-complete"></button>' +
+            '<button class="todo-complete"></button>' +
             '</div>'
-        console.log(li);
-        console.log(item);
-        if (item.completed) {
-            todoCompl.append(li)
-        } else {
+
+        if (item.completed == true) {
+            todoCompleted.append(li)
+        } else if (item.completed == false) {
             todoList.append(li)
         }
-        console.log(item);
-        const app = li.querySelector('.todo-complete')
-        app.addEventListener('click', function () {
-            item.completed = !item.completed
-            render()
-            console.log(object);
-        })
 
+        li.querySelector('.todo-complete').addEventListener('click', function () {
+            item.completed = !item.completed
+            console.log('1');
+            localStorage.setItem('text', JSON.stringify(appData))
+            render()
+        })
 
         const del = li.querySelector('.todo-remove')
         del.addEventListener('click', function () {
-            const index = object.indexOf(item)
-            object.splice(index, 1)
+            const index = appData.indexOf(item)
+            appData.splice(index, 1)
+            localStorage.setItem('text', JSON.stringify(appData))
             render()
-            console.log(object);
         })
+        console.log(appData);
+        console.dir(item);
+
 
     })
 }
 
-control.addEventListener('submit', function (event) {
+todoFofm.addEventListener('submit', function (event) {
     event.preventDefault()
 })
 
-button.addEventListener('click', function () {
-    if (input.value !== '') {
+addBtn.addEventListener('click', function () {
+    if (input.value == '') {
+        console.log('Ошибка, введите задачу');
+    } else {
         const newObj = {
             name: input.value,
             completed: false
         }
-        object.push(newObj)
+        appData.push(newObj)
         input.value = ''
         render()
-    } else {
-        console.log('Введите значение');
-
+        localStorage.setItem('text', JSON.stringify(appData))
     }
 
-
-    console.log(object);
-    console.log(todoList);
-
 })
+const local = JSON.parse(localStorage.getItem('text'))
+console.log(appData);
+render()
+
+
+
+
+
+
+
 
