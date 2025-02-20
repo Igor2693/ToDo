@@ -36,22 +36,15 @@ const render = function () {
             item.completed = !item.completed
             render()
             console.log(object);
-            console.log(item);
-
         })
-        console.log(item);
+
+
         const del = li.querySelector('.todo-remove')
         del.addEventListener('click', function () {
-            object.splice(item, 1)
+            const index = object.indexOf(item)
+            object.splice(index, 1)
             render()
-
-
-            console.log(todoList);
-            console.log(todoCompl);
             console.log(object);
-            console.log(item);
-            console.log(object);
-
         })
 
     })
